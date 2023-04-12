@@ -77,15 +77,6 @@ def download_email_attachments(message_id, headers, save_folder=os.getcwd()):
     except Exception as e:
         print(e)
         return False
-#
-# def _workaround_write(text):
-#     """
-#     This is a work-around for the bug in pyautogui.write() with non-QWERTY keyboards
-#     It copies the text to clipboard and pastes it, instead of typing it.
-#     """
-#     pyperclip.copy(text)
-#     pyautogui.hotkey('command', 'v')
-#     pyperclip.copy('')
 
 
 #Import Rosetta Stone
@@ -195,172 +186,7 @@ def lookPartInNetsuiteReport(QCODE,df):
         o.append([row['Location'],row['Bin Number'],int(row['On Hand'])])
     return o
 
-# #function used for pyautogui. Do not touch.
-# def getShiftFromText(text):
-#     """
-#     Extract position from text copied in clipboard
-#     """
-#     locs=[];
-#     ind1=text.find('Edit')
-#     text=text[ind1::]
-#     text=text.split('\n')
-#     shift=0;
-#     for line in text:
-#         line=line.split('\t')
-#         type=line[2]
-#         if type=='Inventory Item':
-#             return shift
-#         shift+=1
-#     return -1
-#
-#
-# def getBinsFromText(text):
-#     """
-#     Extract bins from text copied in clipboard
-#     """
-#     locs=[];
-#     ind1=text.find('BIN NUMBER')
-#     if ind1==-1:
-#         return []
-#     text=text[ind1::]
-#     ind1=text.find('AVAILABLE')
-#     text=text[ind1::]
-#     ind1=text.find('\t\n\t')
-#     text=text[10:-18] #remove outside
-#     text=text.split('\n')
-#     for line in text:
-#         line=line.split('\t')
-#         location=line[2]
-#         bin=line[0]
-#         qty=line[3]
-#         qty=qty.replace(' ','')
-#         qty=qty.replace(',','')
-#         if qty!='':
-#             qty=int(qty)
-#             locs.append([location,bin,qty])
-#     return locs
-#
-#
-# def getLocationsFromText(text):
-#     """
-#     Extract Locations from text copied in clipboard
-#     """
-#     locs=[];
-#     ind1=text.find('CAE Warehouse')
-#     ind2=text.find('\t\n\t')
-#     text=text[ind1:ind2]
-#     text=text.split('\n')
-#     for line in text:
-#         line=line.split('\t')
-#         qty=line[1]
-#         qty=qty.replace(' ','')
-#         qty=qty.replace(',','')
-#         if qty!='':
-#             qty=int(qty)
-#             locs.append([line[0],qty])
-#     locs = sorted(locs, key=itemgetter(1),reverse=True)
-#     return locs
-
-
-
-#
-#
-# def lookPartInNetsuite(QCODE):
-#     """
-#     This function uses pyautogui to look for a particular QNERGY part number in netsuite.
-#     Netsuite need to be open in a safari browse, maximized and zoomed out completely.
-#     """
-#     searchbarx=585
-#     searchbary=67
-#     viewx=49
-#     viewy=210
-#     idx=634
-#     idy=133
-#     invx=649
-#     invy=509
-#     backx=32
-#     backy=138
-#     WHERE={}
-#     pyautogui.moveTo(searchbarx, searchbary, duration = 0.2)
-#     time.sleep(0.2)
-#     for i in range(5):
-#         pyautogui.click(searchbarx, searchbary)
-#         time.sleep(0.2)
-#     pyautogui.hotkey('command', 'q') #its select all on azerty
-#     time.sleep(0.1)
-#     _workaround_write('"'+QCODE+'"') #input part name in search bar
-#     time.sleep(0.1)
-#     pyautogui.hotkey('enter') #enter
-#     time.sleep(2)
-#     pyautogui.moveTo(idx, idy-10, duration = 0.1)
-#     time.sleep(0.2)
-#     pyautogui.moveTo(idx+2, idy-10, duration = 0.3)
-#     for i in range(3):
-#         pyautogui.click(idx+2, idy-10)
-#         time.sleep(0.1)
-#     pyautogui.hotkey('command', 'q') #its select all on azerty
-#     time.sleep(0.1)
-#     pyautogui.hotkey('command', 'c')
-#     time.sleep(0.1)
-#     text=''
-#     text=pyperclip.paste()
-#     while len(text)==0:
-#         for i in range(3):
-#             pyautogui.click(idx+2, idy-10)
-#             time.sleep(0.1)
-#         pyautogui.hotkey('command', 'q') #its select all on azerty
-#         time.sleep(0.1)
-#         pyautogui.hotkey('command', 'c')
-#         time.sleep(0.1)
-#         text=pyperclip.paste()
-#     if text.find('TOTAL')==-1:
-#         print('no part')
-#         pyautogui.moveTo(backx, backy, duration = 0.3)
-#         for i in range(3):
-#             pyautogui.click(backx, backy)
-#             time.sleep(0.1)
-#         return -1
-#     R=text[text.find('TOTAL')+7]
-#     #print(R)
-#     if R=='1':
-#         pyautogui.moveTo(viewx, viewy, duration = 0.1)
-#         time.sleep(2)
-#         pyautogui.click(viewx, viewy)
-#     else:
-#         shift=getShiftFromText(text) #shift should never be -1 normally
-#         pyautogui.moveTo(viewx, viewy-15+15*shift, duration = 0.1)
-#         time.sleep(2)
-#         pyautogui.click(viewx, viewy-15+15*shift)
-#     pyautogui.moveTo(invx, invy, duration = 0.1)
-#     time.sleep(2.5)
-#     for i in range(3):
-#         pyautogui.click(invx, invy)
-#         time.sleep(0.1)
-#     pyautogui.moveTo(idx, idy, duration = 0.1)
-#     time.sleep(2.5)
-#     pyautogui.moveTo(idx+2, idy, duration = 0.3)
-#     for i in range(3):
-#         pyautogui.click(idx+2, idy)
-#         time.sleep(0.1)
-#     pyautogui.hotkey('command', 'q') #its select all on azerty
-#     time.sleep(0.1)
-#     pyautogui.hotkey('command', 'c')
-#     time.sleep(0.1)
-#     text=''
-#     text=pyperclip.paste()
-#     while len(text)<=1000:
-#         for i in range(3):
-#             pyautogui.click(idx+2, idy)
-#             time.sleep(0.1)
-#         pyautogui.hotkey('command', 'q') #its select all on azerty
-#         time.sleep(0.1)
-#         pyautogui.hotkey('command', 'c')
-#         time.sleep(0.1)
-#         text=pyperclip.paste()
-#     return getBinsFromText(text)
-
 #####Function to parse OctoSearch RESULTS
-
 def ListAllOptions(mpn,QTY,lead):
     ih=IHI[mpn]
     print(lead+'    Available in house options :')
@@ -395,6 +221,7 @@ def ListAllOptions(mpn,QTY,lead):
                 break
 
 def getLCSforPart(MPN,OctoSearches):
+    #"Get part life cycle status."
     try:
         x=OctoSearches[MPN]
     except:
@@ -413,6 +240,7 @@ def getLCSforPart(MPN,OctoSearches):
 
 
 def resolve(mpn,QTY,IHI,OctoSearches,TIERLISTS):
+    #Find best option for a part between in house inventory and octopart option.
     actions=[];
     remaining=QTY;
     try:
@@ -568,6 +396,7 @@ def resolve(mpn,QTY,IHI,OctoSearches,TIERLISTS):
 
 
 def getBestPrice(MPN,QTY,PRIORITY,OctoSearches,TIERLISTS):
+    #Get best price within authorized suppliers.
     O=[]
     try:
         x=OctoSearches[MPN]
@@ -630,7 +459,6 @@ def getBestPriceForPart(part,required_qty,TIERLISTS):
         return []
 
 def getBestPriceFromSeller(seller,required_qty,TIERLISTS):
-    ##test seller here
     priority=rankSeller(seller,TIERLISTS) #0 is highest
     offers=seller.get("offers",{})
     pricing=[];
@@ -648,7 +476,6 @@ def getBestPriceFromOffer(offer,required_qty):
     prices=offer.get('prices',{})
     moq=offer.get('moq',{})
     inventoryLevel=offer.get('inventoryLevel',{})
-    #print(prices)
     if type(inventoryLevel)==type(1) and inventoryLevel<required_qty:
         if inventoryLevel<=0:
             return []
@@ -684,6 +511,7 @@ def rankSeller(seller,TIERLISTS):
 
 #######Functions for name matching (needed when supplied name for suppliers doesnt match exactly the name on octopart)
 def wordMatchScore(str1,str2):
+    #custom function for string comparison
     l1=len(str1)
     l2=len(str2)
     r1=str1.lower()*l2
@@ -703,6 +531,7 @@ def normalizedWordMatchScore(str1,str2):
     return wordMatchScore(str1,str2)/np.sqrt(wordMatchScore(str1,str1)*wordMatchScore(str2,str2))#/((0.2+(0.5*min(l1,l2)+0.5*max(l1,l2)))-1)
 
 def sentenceMatchScore(str1,str2):
+    #custom matching score between 2 sentences
     str1=str1.replace('.',' ')
     str2=str2.replace('.',' ')
     w1s=str1.split(' ')

@@ -47,8 +47,6 @@ def main(argv):
     for i in df.index:
         REQ.append({'MPN':df.loc[i]['MPN'],'QTY':MULTIPLIER*int(df.loc[i]['QTY'])});
     if (lookupNetsuite==True):
-        #input('After you press any key, you have 10 sec to open Netsuite in a maximized safari window. Ctrl-c to quit.')
-        #time.sleep(10)
         access_token = generate_access_token(app_id=APP_ID, scopes=SCOPES)
         headers = {
             'Authorization': 'Bearer ' + access_token['access_token']
